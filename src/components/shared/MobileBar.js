@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import StateContext from "@/context/StateContext";
 import Link from "next/link";
 import styled from "styled-components";
@@ -62,6 +62,12 @@ export default function SwipeBar({ open, setOpen }) {
     openLoginPopUp,
     setOpenLoginPopUp,
   } = useContext(StateContext);
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Drawer Handler for Tablet and Mobile device
   const drawerHandlerClose = (open) => {
@@ -333,24 +339,22 @@ export default function SwipeBar({ open, setOpen }) {
         <Divider />
 
         {/* Login  */}
-		{isClient ? 
-        <ListItem>
-		{userInfo ? 
-			<MobileButton>
-            {userInfo.student.name}
-          </MobileButton>
-		:
-          <MobileButton onClick={setOpenLoginPopUp}>
-            <AccountCircleRoundedIcon
-              sx={{ color: "var(--purpleColor)", fontSize: "1.5rem" }}
-            />
-            Login
-          </MobileButton>
-		}
-        </ListItem>
-		:
-		""
-						}
+        {isClient ? (
+          <ListItem>
+            {userInfo ? (
+              <MobileButton>{userInfo.student.name}</MobileButton>
+            ) : (
+              <MobileButton onClick={setOpenLoginPopUp}>
+                <AccountCircleRoundedIcon
+                  sx={{ color: "var(--purpleColor)", fontSize: "1.5rem" }}
+                />
+                Login
+              </MobileButton>
+            )}
+          </ListItem>
+        ) : (
+          ""
+        )}
         <Divider />
 
         {/* Get Started  */}
