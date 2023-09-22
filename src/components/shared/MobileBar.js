@@ -69,6 +69,12 @@ export default function SwipeBar({ open, setOpen }) {
     setIsClient(true);
   }, []);
 
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+    alert("User loggedout Successfully");     
+  };
+
   // Drawer Handler for Tablet and Mobile device
   const drawerHandlerClose = (open) => {
     setOpen(!open);
@@ -342,7 +348,7 @@ export default function SwipeBar({ open, setOpen }) {
         {isClient ? (
           <ListItem>
             {userInfo ? (
-              <MobileButton>{userInfo.student.name}</MobileButton>
+              <MobileButton onClick={signoutHandler}>{userInfo.student.name}</MobileButton>
             ) : (
               <MobileButton onClick={setOpenLoginPopUp}>
                 <AccountCircleRoundedIcon
@@ -359,7 +365,7 @@ export default function SwipeBar({ open, setOpen }) {
 
         {/* Get Started  */}
         <ListItem>
-          <MobileButton onClick={setOpenLoginPopUp}>
+          <MobileButton onClick={setOpenSignInPopUp}>
             <PersonAddAltRoundedIcon
               sx={{ color: "var(--purpleColor)", fontSize: "1.5rem" }}
             />

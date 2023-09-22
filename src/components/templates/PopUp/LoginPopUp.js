@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import Axios from "axios";
-import { useRouter } from 'next/navigation'
 import {
   Dialog,
   DialogTitle,
@@ -142,7 +141,6 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter()
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
@@ -151,6 +149,7 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
   const submitHandler = async (e) => {
     e.preventDefault();
 	if(!email && !password){
+     alert("please enter email and password")
 	   return;
 	}
     try {
@@ -161,12 +160,11 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
           password,
         }
       );
-
       console.log(data);
-	  ctxDispatch({ type: "USER_SIGNIN", payload: data });
+	    ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      router.push('/')
-	  setOpenLoginPopUp(false)
+	    setOpenLoginPopUp(false)
+      alert("User login Successfully");
     } catch (err) {
       console.log(err);
     }
@@ -254,7 +252,7 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
             </Box>
 
             <ButtonBox>
-              <Button onClick={submitHandler}>Sign up</Button>
+              <Button onClick={submitHandler}>Sign In</Button>
             </ButtonBox>
           <ActionBox>
             <ActionText>

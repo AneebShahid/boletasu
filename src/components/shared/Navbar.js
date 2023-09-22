@@ -150,6 +150,11 @@ export default function Navbar() {
 		useEffect(() => {
 		  setIsClient(true)
 		}, [])
+		const signoutHandler = () => {
+			ctxDispatch({ type: "USER_SIGNOUT" });
+			localStorage.removeItem("userInfo");
+			alert("User loggedout Successfully");
+		  };
 
 		const { state, dispatch: ctxDispatch } = useContext(Store);
 		const { userInfo } = state;
@@ -458,6 +463,7 @@ export default function Navbar() {
 						<CtaBox>
 						{userInfo ? 
 							<CtaButton
+							    onClick={signoutHandler}
 								lightcolor={navLightTheme ? "light" : "dark"}
 							>
 								{userInfo.student.name}

@@ -120,12 +120,16 @@ export default function SignInPop({ openSignInPopUp, setOpenSignInPopUp }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!name && !email && !password) {
+      alert("Please enter name,email and paasword");
+      return;
+    }
     if (password !== confirmPassword) {
-      console.log("Passwords do not match")
+      alert("Passwords do not match")
       return;
     }
     if (password.length < 8) {
-      console.log("Password cannot be less than 8 characters.");
+      alert("Password cannot be less than 8 characters.");
       return;
     }
     try {
@@ -135,6 +139,7 @@ export default function SignInPop({ openSignInPopUp, setOpenSignInPopUp }) {
         password,
       });
       console.log("Registered Successfully")
+      alert("Registered Successfully");
       setOpenSignInPopUp(false);
     } catch (err) {
       console.log(err)
