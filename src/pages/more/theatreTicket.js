@@ -1,0 +1,101 @@
+import React from "react";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import styled from "styled-components";
+import { Grid } from "@mui/material";
+
+// component
+const PageTicketHero = dynamic(() => import("@/components/templates/hero/PageTicketHero"));
+const TrendingSliderWithoutImage = dynamic(() => import("@/components/templates/Slider/TrendingSliderWithoutImage"));
+const ImageSliderNoDetail = dynamic(() => import("@/components/templates/Slider/ImageSliderNoDetail"));
+const PerformerList = dynamic(() => import("@/components/pageSection/PerformerList"));
+const EventList = dynamic(() => import("@/components/pageSection/EventList"));
+
+// Json Data
+import { theatreTrendingData, theatreCategoryData } from "@/components/json/moreData";
+import { avatarLessData } from "@/components/json/AvatarData";
+import { TheatreEventData } from "@/components/json/EventData";
+
+// styles
+const Container = styled.section`
+	padding: 2rem 0;
+
+	@media (min-width: 601px) and (max-width: 1024px) {
+		padding: 2rem 0;
+	}
+`;
+
+const Wrapper = styled.div`
+	width: 92%;
+	margin: auto;
+`;
+
+const HeaderBox = styled.div`
+	margin-bottom: 1.5rem;
+
+	@media (min-width: 601px) and (max-width: 1024px) {
+		margin-bottom: 1rem;
+	}
+`;
+
+const GridContainer = styled.div``;
+
+const EventContainer = styled.div``;
+
+const PerformerContainer = styled.div``;
+
+export default function TheatreTicket() {
+	return (
+		<>
+			<Head>
+				<title>Boletaso | Theatre Ticket</title>
+				<meta name='description' content='' />
+				<meta name='viewport' content='width=device-width, initial-scale=1' />
+				<link rel='icon' href='/favicon.ico' />
+			</Head>
+
+			<main>
+				{/* Hero Page */}
+				<PageTicketHero
+					header='Theatre Tickets'
+					description='Theatre opens us up to experiencing different perspectives that we may not be aware of or contemplated. Theatres way of examining dialogue, monologue and character allows us to flex our empathy muscles. In other words- understanding theatre helps us understand what it means to be human.'
+					image='/images/morePage/banner/TheatreMain.png'
+				/>
+
+				{/* Trending Slider */}
+				<TrendingSliderWithoutImage
+					sliderHeader='Events near American Fork, UT'
+					sliderData={theatreTrendingData}
+					sliderRef='moreTheatreTrendSlider'
+				/>
+
+				{/* Category Slider */}
+				<ImageSliderNoDetail
+					sliderHeader='Popular Reggae Shows'
+					sliderData={theatreCategoryData}
+					sliderRef='moreTheatreCategoriesSlider'
+				/>
+
+				{/* Grid Events and Performer*/}
+				<Container>
+					<Wrapper>
+						<GridContainer>
+							<Grid container spacing={8} justifyContent='space-between'>
+								<Grid item xs={12} sm={8} md={8}>
+									<EventContainer>
+										<EventList sectionHeader='All Shows' dataList={TheatreEventData} />
+									</EventContainer>
+								</Grid>
+								<Grid item xs={12} sm={4} md={4}>
+									<PerformerContainer>
+										<PerformerList sectionHeader='Top Artists' dataList={avatarLessData} />
+									</PerformerContainer>
+								</Grid>
+							</Grid>
+						</GridContainer>
+					</Wrapper>
+				</Container>
+			</main>
+		</>
+	);
+}
