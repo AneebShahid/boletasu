@@ -170,7 +170,7 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
       }
     } catch (err) {
       console.log(err);
-      alert(getError(err));
+      alert(err);
     }
   };
 
