@@ -144,14 +144,12 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
-
-
   const submitHandler = async (e) => {
     e.preventDefault();
-	if(!email && !password){
-     alert("please enter email and password")
-	   return;
-	}
+    if (!email && !password) {
+      alert("please enter email and password");
+      return;
+    }
     try {
       const { data } = await Axios.post(
         `https://boletaso.sehatpk.com/api/login`,
@@ -160,13 +158,19 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
           password,
         }
       );
-      console.log(data);
-	    ctxDispatch({ type: "USER_SIGNIN", payload: data });
-      localStorage.setItem("userInfo", JSON.stringify(data));
-	    setOpenLoginPopUp(false)
-      alert("User login Successfully");
+      setOpenLoginPopUp(false);
+      ctxDispatch({ type: "USER_SIGNIN", payload: data });
+      if(data.success === true){
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        alert("User login Successfully");
+      }
+      else{
+        ctxDispatch({ type: "USER_SIGNOUT" });
+        alert(`${data.message}`);
+      }
     } catch (err) {
       console.log(err);
+      alert(getError(err));
     }
   };
 
@@ -212,48 +216,48 @@ export default function LoginPopUp({ openLoginPopUp, setOpenLoginPopUp }) {
           <HeaderBox>
             <Header>Login in to BOLETASO</Header>
           </HeaderBox>
-            <Box>
-              <Label>Email Address or Phone Number</Label>
-              <TextField
-                onChange={(e) => setEmail(e.target.value)}
-				required
-                type="email"
-                fullWidth={true}
+          <Box>
+            <Label>Email Address or Phone Number</Label>
+            <TextField
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              type="email"
+              fullWidth={true}
+            />
+          </Box>
+
+          <Box>
+            <Label>Password</Label>
+
+            <FormControl sx={{}} variant="outlined" fullWidth={true}>
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                // label='Password'
               />
-            </Box>
+            </FormControl>
+          </Box>
 
-            <Box>
-              <Label>Password</Label>
-
-              <FormControl sx={{}} variant="outlined" fullWidth={true}>
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
-                </InputLabel>
-                <OutlinedInput
-                  onChange={(e) => setPassword(e.target.value)}
-				  required
-                  id="outlined-adornment-password"
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  // label='Password'
-                />
-              </FormControl>
-            </Box>
-
-            <ButtonBox>
-              <Button onClick={submitHandler}>Sign In</Button>
-            </ButtonBox>
+          <ButtonBox>
+            <Button onClick={submitHandler}>Sign In</Button>
+          </ButtonBox>
           <ActionBox>
             <ActionText>
               Need a BOLETASO account?{" "}
